@@ -1,0 +1,17 @@
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/obj/Debug/net9.0/ATM.csproj.AssemblyReference.cache
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/obj/Debug/net9.0/ATM.GeneratedMSBuildEditorConfig.editorconfig
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/obj/Debug/net9.0/ATM.AssemblyInfoInputs.cache
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/obj/Debug/net9.0/ATM.AssemblyInfo.cs
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/obj/Debug/net9.0/ATM.csproj.CoreCompileInputs.cache
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/bin/Debug/net9.0/ATM
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/bin/Debug/net9.0/ATM.deps.json
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/bin/Debug/net9.0/ATM.runtimeconfig.json
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/bin/Debug/net9.0/ATM.dll
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/bin/Debug/net9.0/ATM.pdb
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/bin/Debug/net9.0/Newtonsoft.Json.dll
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/obj/Debug/net9.0/ATM.csproj.Up2Date
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/obj/Debug/net9.0/ATM.dll
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/obj/Debug/net9.0/refint/ATM.dll
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/obj/Debug/net9.0/ATM.pdb
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/obj/Debug/net9.0/ATM.genruntimeconfig.cache
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/obj/Debug/net9.0/ref/ATM.dll
