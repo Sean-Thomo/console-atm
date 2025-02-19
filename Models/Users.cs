@@ -1,16 +1,10 @@
 namespace ATM.Models{
-    public class User {
-    private string userName { get; set; }
-    private int accountNumber { get; set; }
-    private string PIN { get; set; }
-    private double balance { get; set; }
-    private string country { get; set;}
-
-    public User(string username, int accountNumber, string pin, double balance, string country) {
-        userName = username;
-        PIN = pin;
-        balance = balance;
-        country = country;
+    public class User(string username, string accountNumber, string pin, double balance, string country)
+    {
+        public string userName { get; set; } = username;
+        public string accountNumber { get; set; } = accountNumber;
+        public string PIN { get; set; } = pin;
+        public double balance { get; set; } = balance;
+        public string country { get; set; } = country;
     }
-}
 }

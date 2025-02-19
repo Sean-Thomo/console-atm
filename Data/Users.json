@@ -1,0 +1,23 @@
+[
+	{
+		"userName": "Sean Thomo",
+		"accountNumber": "1234",
+		"pin": "1234",
+		"balance": 10000.0,
+		"country": "South Africa"
+	},
+	{
+		"userName": "John Doe",
+		"accountNumber": "5678",
+		"pin": "5678",
+		"balance": 500.0,
+		"country": "United Kingdom"
+	},
+	{
+		"userName": "Jane Doe",
+		"accountNumber": "4321",
+		"pin": "4321",
+		"balance": 750.0,
+		"country": "Nigeria"
+	}
+]

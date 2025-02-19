@@ -1,5 +1,6 @@
 ﻿using System;
 using ATM.Models;
+using ATM.Service;
 
 namespace ATM {
     class Program {
@@ -24,7 +25,7 @@ namespace ATM {
                 switch (choice)
                 {
                     case "1":
-                        Console.WriteLine("AuthService Call");
+                        Login();
                         break;
                     case "2":
                         Console.WriteLine("Check Balance Service Call ");
@@ -49,6 +50,24 @@ namespace ATM {
                         Console.WriteLine("Invalid option. Pleae try again.");
                         break;
                 }
+            }
+        }
+
+        public static void Login() {
+            var authService = new AuthService();
+
+            Console.Write("\n ====== LOGIN ======");
+            Console.Write("Account Number: ");
+            string accountNumber = Console.ReadLine();
+            Console.Write("Account PIN: ");
+            string pin = Console.ReadLine();
+
+            User currentUser = authService.Login(accountNumber, pin);
+
+            if (currentUser != null) {
+                Console.WriteLine($"Welcome, {currentUser.userName}!");
+            } else {
+                Console.WriteLine("Invalid credentials.");
             }
         }
     }
