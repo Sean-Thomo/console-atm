@@ -1,12 +1,15 @@
 ﻿using System;
 using ATM.Models;
 using ATM.Service;
+using Microsoft.VisualBasic;
 
 namespace ATM {
     class Program {
         static void Main(string[] args) {
 
             bool continueAtm = true;
+            bool isLogedIn = false;
+            var authService = new AuthService();
 
             while (continueAtm)
             {
@@ -18,14 +21,14 @@ namespace ATM {
                 Console.WriteLine("5. Send Money");
                 Console.WriteLine("6. View Transactions");
                 Console.WriteLine("7. Exit");
-                Console.Write("Choose an option: ");
+                Console.Write("\nChoose an option: ");
 
                 string choice = Console.ReadLine();
 
                 switch (choice)
                 {
                     case "1":
-                        Login();
+                        Login(authService, isLogedIn);
                         break;
                     case "2":
                         Console.WriteLine("Check Balance Service Call ");
@@ -53,11 +56,10 @@ namespace ATM {
             }
         }
 
-        public static void Login() {
-            var authService = new AuthService();
+        public static void Login(AuthService authService, bool isLogedIn) {
 
-            Console.Write("\n ====== LOGIN ======");
-            Console.Write("Account Number: ");
+            Console.Write("\n====== LOGIN ======");
+            Console.Write("\nAccount Number: ");
             string accountNumber = Console.ReadLine();
             Console.Write("Account PIN: ");
             string pin = Console.ReadLine();
@@ -65,7 +67,8 @@ namespace ATM {
             User currentUser = authService.Login(accountNumber, pin);
 
             if (currentUser != null) {
-                Console.WriteLine($"Welcome, {currentUser.userName}!");
+                isLogedIn = true;
+                Console.WriteLine($"\nWelcome, {currentUser.userName}!");
             } else {
                 Console.WriteLine("Invalid credentials.");
             }

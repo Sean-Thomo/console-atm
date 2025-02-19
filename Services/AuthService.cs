@@ -37,13 +37,6 @@ namespace ATM.Service
 
             User user = users.Find(u => u.accountNumber == accountNumber && u.PIN == pin);
 
-            if (user != null)
-            {
-                Console.WriteLine($"Login successful. Welcome, {user.userName}!");
-            } else {
-                Console.WriteLine("Invalid credentials.");
-            }
-
             return user;
         }
     }
