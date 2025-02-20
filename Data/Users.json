@@ -1,23 +1,26 @@
 [
 	{
-		"userName": "Sean Thomo",
-		"accountNumber": "1234",
-		"pin": "1234",
-		"balance": 10000.0,
-		"country": "South Africa"
+		"UserName": "Sean Thomo",
+		"AccountNumber": "1234",
+		"PIN": "1234",
+		"Balance": 10000.0,
+		"Country": "South Africa",
+		"IsLogedIn": true
 	},
 	{
-		"userName": "John Doe",
-		"accountNumber": "5678",
-		"pin": "5678",
-		"balance": 500.0,
-		"country": "United Kingdom"
+		"UserName": "John Doe",
+		"AccountNumber": "5678",
+		"PIN": "5678",
+		"Balance": 500.0,
+		"Country": "United Kingdom",
+		"IsLogedIn": false
 	},
 	{
-		"userName": "Jane Doe",
-		"accountNumber": "4321",
-		"pin": "4321",
-		"balance": 750.0,
-		"country": "Nigeria"
+		"UserName": "Jane Doe",
+		"AccountNumber": "4321",
+		"PIN": "4321",
+		"Balance": 750.0,
+		"Country": "Nigeria",
+		"IsLogedIn": false
 	}
 ]

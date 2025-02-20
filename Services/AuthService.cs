@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using ATM.Models;
 using Newtonsoft.Json;
 
-namespace ATM.Service
+namespace ATM.Services
 {
     public class AuthService
     {
@@ -32,12 +32,42 @@ namespace ATM.Service
             }
         }
 
+        private void WriteUsers(List<User> users)
+        {
+            try
+            {
+                string json = JsonConvert.SerializeObject(users, Formatting.Indented);
+                File.WriteAllText(_usersFilePath, json);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error writing users: {ex.Message}");
+            }
+        }
+
         public User Login(string accountNumber, string pin){
             List<User> users = ReadUsers();
 
-            User user = users.Find(u => u.accountNumber == accountNumber && u.PIN == pin);
+            User user = users.Find(u => u.AccountNumber == accountNumber && u.PIN == pin);
 
+            if (user != null) 
+            {
+                user.IsLogedIn = true;
+                WriteUsers(users);
+            }
             return user;
+        }
+
+        public void Logout(string accountNumber) {
+            List<User> users = ReadUsers();
+
+            User user = users.Find(u => u.AccountNumber == accountNumber);
+
+            if (user != null)
+            {
+                user.IsLogedIn = false;
+                WriteUsers(users);
+            }
         }
     }
 }
