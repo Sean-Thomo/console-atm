@@ -19,13 +19,8 @@
 
    - Send money to another account, even in a different country.
    - Utilizes a currency conversion API (e.g., ExchangeRate-API or Open Exchange Rates) for converting amounts to the recipient's currency.
-   - Stores transaction details (sender, receiver, amount, currency, conversion rate, timestamp) in a JSON file.
 
-4. **Transaction History:**
-
-   - Users can view a list of all transactions (deposits, withdrawals, and transfers).
-
-5. **Exit:**
+4. **Exit:**
    - Logs out and exits the application.
 
 ## Installation
