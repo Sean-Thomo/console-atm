@@ -17,6 +17,7 @@ namespace ATM {
             var fileService = new FileService<User>(Path.Combine("Data", "Users.json"));
             var authService = new AuthService(fileService);
             var transferService = new TransferService(fileService);
+            var accountService = new AccountService(fileService);
 
             while (continueAtm)
             {
@@ -41,13 +42,13 @@ namespace ATM {
                         CheckBalance();
                         break;
                     case "3":
-                        Deposit(transferService);
+                        Deposit(accountService);
                         break;
                     case "4":
-                        Console.WriteLine("Withdraw Service Call");
+                        WithDraw(accountService);
                         break;
                     case "5":
-                        Console.WriteLine("Send Money Service Call");
+                        Transfer(transferService);
                         break;
                     case "6":
                         Console.WriteLine("View Transactions Service Call");
@@ -102,15 +103,33 @@ namespace ATM {
 
         }
 
-        public static void Deposit(TransferService transferService) {
+        public static void Deposit(AccountService accountService) {
 
             Console.WriteLine("\n====== DEPOSIT ======\n");
-            Console.Write("\nAccount Number: ");
-            string accountNumber = Console.ReadLine().Trim();
             Console.Write("Amount: ");
             double amount = Convert.ToDouble(Console.ReadLine().Trim());
 
-            transferService.Transfer(currentUser.AccountNumber, accountNumber, amount);
+            accountService.Deposit(currentUser.AccountNumber, amount);
+        }
+
+        public static void WithDraw(AccountService accountService) {
+
+            Console.WriteLine("\n====== WITHDRAW ======\n");
+            Console.Write("Amount: ");
+            double amount = Convert.ToDouble(Console.ReadLine().Trim());
+
+            accountService.Withdraw(currentUser.AccountNumber, amount);
+        }
+
+        public static void Transfer(TransferService transferService) {
+
+            Console.WriteLine("\n====== TRANSFER ======\n");
+            Console.Write("Account Number: ");
+            string receivingAccountNumber = Console.ReadLine().Trim();
+            Console.Write("Amount: ");
+            double amount = Convert.ToDouble(Console.ReadLine().Trim());
+
+            transferService.Transfer(currentUser.AccountNumber, receivingAccountNumber, amount);
         }
     }
 }
