@@ -15,6 +15,7 @@ namespace ATM {
             bool continueAtm = true;
 
             var authService = new AuthService();
+            var transferService = new TransferService();
 
             while (continueAtm)
             {
@@ -39,7 +40,7 @@ namespace ATM {
                         CheckBalance();
                         break;
                     case "3":
-                        Console.WriteLine("Deposit Service Call");
+                        Deposit(transferService);
                         break;
                     case "4":
                         Console.WriteLine("Withdraw Service Call");
@@ -52,6 +53,7 @@ namespace ATM {
                         break;
                     case "7":
                         continueAtm = false;
+                        Logout(authService);
                         Console.WriteLine("Thank you for using the ATM. Goodbye!");
                         break;
                     default:
@@ -65,9 +67,9 @@ namespace ATM {
 
             Console.Write("\n====== LOGIN ======\n");
             Console.Write("\nAccount Number: ");
-            string accountNumber = Console.ReadLine();
+            string accountNumber = Console.ReadLine().Trim();
             Console.Write("Account PIN: ");
-            string pin = Console.ReadLine();
+            string pin = Console.ReadLine().Trim();
 
             currentUser = authService.Login(accountNumber, pin);
 
@@ -79,6 +81,16 @@ namespace ATM {
             }
         }
 
+        public static void Logout(AuthService authService) {
+
+            if (isLogedIn && currentUser != null)
+            {
+                authService.Logout(currentUser.AccountNumber);
+                isLogedIn = false;
+                currentUser = null;
+            }
+        }
+
         public static void CheckBalance() {
 
             if (isLogedIn && currentUser != null)
@@ -87,6 +99,17 @@ namespace ATM {
                 Console.WriteLine($"R {currentUser.Balance}");
             }
 
+        }
+
+        public static void Deposit(TransferService transferService) {
+
+            Console.WriteLine("\n====== DEPOSIT ======\n");
+            Console.Write("\nAccount Number: ");
+            string accountNumber = Console.ReadLine().Trim();
+            Console.Write("Amount: ");
+            double amount = Convert.ToDouble(Console.ReadLine().Trim());
+
+            transferService.Transfer(currentUser.AccountNumber, accountNumber, amount);
         }
     }
 }

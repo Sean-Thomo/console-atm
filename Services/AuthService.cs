@@ -48,7 +48,7 @@ namespace ATM.Services
         public User Login(string accountNumber, string pin){
             List<User> users = ReadUsers();
 
-            User user = users.Find(u => u.AccountNumber == accountNumber && u.PIN == pin);
+            User? user = users.Find(u => u.AccountNumber == accountNumber && u.PIN == pin);
 
             if (user != null) 
             {
@@ -61,7 +61,7 @@ namespace ATM.Services
         public void Logout(string accountNumber) {
             List<User> users = ReadUsers();
 
-            User user = users.Find(u => u.AccountNumber == accountNumber);
+            User? user = users.Find(u => u.AccountNumber == accountNumber);
 
             if (user != null)
             {
