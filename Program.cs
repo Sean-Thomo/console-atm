@@ -16,7 +16,7 @@ namespace ATM {
 
             var fileService = new FileService<User>(Path.Combine("Data", "Users.json"));
             var authService = new AuthService(fileService);
-            var transferService = new TransferService();
+            var transferService = new TransferService(fileService);
 
             while (continueAtm)
             {
