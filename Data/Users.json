@@ -3,24 +3,24 @@
     "UserName": "Sean Thomo",
     "AccountNumber": "1234",
     "PIN": "1234",
-    "Balance": 9500.0,
-    "Country": "South Africa",
+    "Balance": 4179.0,
+    "Currency": "ZAR",
     "IsLogedIn": false
   },
   {
     "UserName": "John Doe",
     "AccountNumber": "5678",
     "PIN": "5678",
-    "Balance": 1000.0,
-    "Country": "United Kingdom",
+    "Balance": 2000.0,
+    "Currency": "GBP",
     "IsLogedIn": false
   },
   {
     "UserName": "Jane Doe",
     "AccountNumber": "4321",
     "PIN": "4321",
-    "Balance": 750.0,
-    "Country": "Nigeria",
+    "Balance": 353563.5389,
+    "Currency": "NGN",
     "IsLogedIn": false
   }
 ]

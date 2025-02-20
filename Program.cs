@@ -2,7 +2,8 @@
 using System.Runtime.CompilerServices;
 using ATM.Models;
 using ATM.Services;
-using Microsoft.VisualBasic;
+using ATM.Utils;
+
 
 namespace ATM {
     class Program {
@@ -98,7 +99,7 @@ namespace ATM {
             if (isLogedIn && currentUser != null)
             {
                 Console.WriteLine("\n====== BALANCE ======\n");
-                Console.WriteLine($"R {currentUser.Balance}");
+                Console.WriteLine($"{currentUser.Currency} {currentUser.Balance.ToString("C")}");
             }
 
         }
@@ -107,7 +108,7 @@ namespace ATM {
 
             Console.WriteLine("\n====== DEPOSIT ======\n");
             Console.Write("Amount: ");
-            double amount = Convert.ToDouble(Console.ReadLine().Trim());
+            decimal amount = Convert.ToDecimal(Console.ReadLine().Trim());
 
             accountService.Deposit(currentUser.AccountNumber, amount);
         }
@@ -116,20 +117,24 @@ namespace ATM {
 
             Console.WriteLine("\n====== WITHDRAW ======\n");
             Console.Write("Amount: ");
-            double amount = Convert.ToDouble(Console.ReadLine().Trim());
+            decimal amount = Convert.ToDecimal(Console.ReadLine().Trim());
 
             accountService.Withdraw(currentUser.AccountNumber, amount);
         }
 
-        public static void Transfer(TransferService transferService) {
+        public static async Task Transfer(TransferService transferService) {
 
             Console.WriteLine("\n====== TRANSFER ======\n");
             Console.Write("Account Number: ");
             string receivingAccountNumber = Console.ReadLine().Trim();
             Console.Write("Amount: ");
-            double amount = Convert.ToDouble(Console.ReadLine().Trim());
+            decimal amount = Convert.ToDecimal(Console.ReadLine().Trim());
 
-            transferService.Transfer(currentUser.AccountNumber, receivingAccountNumber, amount);
+            User receivingUser = transferService.GetUserByAccountNumber(receivingAccountNumber);
+
+            decimal rate = await CurrencyConverter.Convert(currentUser.Currency, receivingUser.Currency);
+
+            transferService.Transfer(currentUser.AccountNumber, receivingAccountNumber, amount, rate);
         }
     }
 }

@@ -15,3 +15,8 @@
 /mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/obj/Debug/net9.0/ATM.pdb
 /mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/obj/Debug/net9.0/ATM.genruntimeconfig.cache
 /mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/obj/Debug/net9.0/ref/ATM.dll
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/bin/Debug/net9.0/DotNetEnv.dll
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/bin/Debug/net9.0/Microsoft.Extensions.Configuration.dll
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/bin/Debug/net9.0/Microsoft.Extensions.Primitives.dll
+/mnt/c/Users/seans/OneDrive/Documents/projects/csharp/ATM/bin/Debug/net9.0/Sprache.dll

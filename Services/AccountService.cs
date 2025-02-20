@@ -18,7 +18,7 @@ namespace ATM.Services
             _fileService.WriteToFile(users);
         }
 
-        public void Deposit(string accountNumber, double amount) 
+        public void Deposit(string accountNumber, decimal amount) 
         {
             List<User> users = ReadUsers();
             User? user = users.Find(u => u.AccountNumber == accountNumber);
@@ -36,14 +36,14 @@ namespace ATM.Services
             }
         }
 
-        public void Withdraw(string accountNumber, double amount) 
+        public void Withdraw(string accountNumber, decimal amount) 
         {
             List<User> users = ReadUsers();
             User? user = users.Find(u => u.AccountNumber == accountNumber);
             
             if (user != null)
             {
-                double newBalance = user.Balance - amount;
+                decimal newBalance = user.Balance - amount;
                 if (newBalance >= 0)
                 {
                     user.Balance = newBalance;

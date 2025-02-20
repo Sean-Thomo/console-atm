@@ -17,7 +17,7 @@ namespace ATM.Services
             _fileService.WriteToFile(users);
         }
 
-        public void Transfer(string currentUserAccountNumber, string receivingAccountNumber, double amount) 
+        public void Transfer(string currentUserAccountNumber, string receivingAccountNumber, decimal amount, decimal rate) 
         {
             List<User> users = ReadUsers();
             User? sendingAccount = users.Find(u => u.AccountNumber == currentUserAccountNumber);
@@ -29,19 +29,32 @@ namespace ATM.Services
                 return;
             }
 
-            double senderBalance = sendingAccount.Balance - amount;
+            decimal senderBalance = sendingAccount.Balance - amount;
 
             if (senderBalance > 0 && receiveAccount != null)
             {
                 Console.WriteLine("\n****** Transferring Money ******");
                 sendingAccount.Balance = senderBalance;
-                receiveAccount.Balance += amount;
+                receiveAccount.Balance += amount * rate;
                 WriteUsers(users);
 
                 Console.WriteLine("\n====== UPDATED BALANCE ======");
                 Console.WriteLine($"\nR {senderBalance}");
             } else {
                 Console.WriteLine("Insufficient funds or invalid account number.");
+            }
+        }
+
+        public User GetUserByAccountNumber(string accountNumber)
+        {
+            List<User> users = ReadUsers();
+            User? user = users.Find(u => u.AccountNumber == accountNumber);
+
+            if (user != null)
+            {
+                return user;
+            } else {
+                return null;
             }
         }
 
