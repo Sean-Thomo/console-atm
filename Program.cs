@@ -108,7 +108,7 @@ namespace ATM {
 
             Console.WriteLine("\n====== DEPOSIT ======\n");
             Console.Write("Amount: ");
-            decimal amount = Convert.ToDecimal(Console.ReadLine().Trim());
+            decimal amount = Convert.ToDecimal(Console.ReadLine());
 
             accountService.Deposit(currentUser.AccountNumber, amount);
         }
