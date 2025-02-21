@@ -56,7 +56,7 @@ namespace ATM {
                         await Transfer(transferService);
                         break;
                     case "6":
-                        Console.WriteLine("View Transactions Service Call");
+                        ViewTransActions(accountService);
                         break;
                     case "7":
                         continueAtm = false;
@@ -67,6 +67,14 @@ namespace ATM {
                         Console.WriteLine("Invalid option. Pleae try again.");
                         break;
                 }
+            }
+        }
+
+        private static void ViewTransActions(AccountService accountService)
+        {
+            if (isLogedIn && currentUser != null)
+            {
+                accountService.GetTransactions(currentUser.AccountNumber);
             }
         }
 

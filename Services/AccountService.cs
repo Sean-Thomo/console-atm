@@ -65,5 +65,31 @@ namespace ATM.Services
                 }
             }
         }
+
+        public void GetTransactions(string accountNumber)
+        {
+            string query = "SELECT * FROM Transactions WHERE AccountNumber = @AccountNumber";
+            using SQLiteCommand cmd = new(query, _sqliteConnection);
+            cmd.Parameters.AddWithValue("@AccountNumber", accountNumber);
+
+            using SQLiteDataReader reader = cmd.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                Console.WriteLine("\n====== TRANSACTIONS ======\n");
+                while (reader.Read())
+                {
+                    Console.WriteLine($"Transaction ID    : {Convert.ToInt32(reader["TransactionId"])}");
+                    Console.WriteLine($"Account Number    : {reader["AccountNumber"]?.ToString() ?? string.Empty}");
+                    Console.WriteLine($"Recipient Account : {reader["RecipientAccount"]?.ToString() ?? string.Empty}");
+                    Console.WriteLine($"Amount            : {Math.Round(Convert.ToDecimal(reader["Amount"]), 2)}");
+                    Console.WriteLine($"Transaction Type  : {reader["TransactionType"]?.ToString() ?? string.Empty}");
+                    Console.WriteLine($"Timestamp         : {reader["Timestamp"]?.ToString() ?? string.Empty}");
+                    Console.WriteLine("--------------------------------------------------------------");
+                }
+            } else {
+                Console.WriteLine("No transactions found.");
+            }
+        }
     }
 }
