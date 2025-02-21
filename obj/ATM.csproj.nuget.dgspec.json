@@ -53,6 +53,10 @@
               "target": "Package",
               "version": "[13.0.3, )"
             },
+            "System.Data.SQLite": {
+              "target": "Package",
+              "version": "[1.0.119, )"
+            },
             "System.Net.Http": {
               "target": "Package",
               "version": "[4.3.4, )"

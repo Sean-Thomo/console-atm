@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using ATM.Models;
 using ATM.Services;
 using ATM.Utils;
+using ATM.Data;
 
 
 namespace ATM {
@@ -13,6 +14,7 @@ namespace ATM {
 
         static void Main(string[] args) {
 
+            DatabaseInitializer.InitializeDatabase();
             bool continueAtm = true;
 
             var fileService = new FileService<User>(Path.Combine("Data", "Users.json"));
