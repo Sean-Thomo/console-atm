@@ -17,6 +17,8 @@ namespace ATM.Data
             {
                 CreateUsersTable(sqlite_conn);
                 InsertUsers(sqlite_conn);
+                CreateTransactionsTable(sqlite_conn);
+                InsertTransactions(sqlite_conn);
             }
         }
 
@@ -57,6 +59,50 @@ namespace ATM.Data
             using SQLiteCommand createTableCmd = new(createTableSQL, sqlite_conn);
             createTableCmd.ExecuteNonQuery();
         }
+
+        private static void CreateTransactionsTable(SQLiteConnection sqlite_conn)
+        {
+            string createTableSQL = @"CREATE TABLE IF NOT EXISTS Transactions (
+                TransactionId INTEGER PRIMARY KEY AUTOINCREMENT,
+                AccountNumber TEXT NOT NULL,
+                RecipientAccount TEXT,
+                Amount DECIMAL NOT NULL,
+                TransactionType TEXT NOT NULL CHECK (TransactionType IN ('Deposit', 'Withdrawal', 'Transfer')),
+                Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (AccountNumber) REFERENCES Users(AccountNumber) ON DELETE CASCADE,
+                FOREIGN KEY (RecipientAccount) REFERENCES Users(AccountNumber) ON DELETE CASCADE
+            )";
+
+            using SQLiteCommand createTableCmd = new(createTableSQL, sqlite_conn);
+            createTableCmd.ExecuteNonQuery();
+        }
+
+        private static void InsertTransactions(SQLiteConnection sqlite_conn)
+        {
+            string insertSQL = @"INSERT INTO Transactions (AccountNumber, RecipientAccount, Amount, TransactionType) 
+                                VALUES (@AccountNumber, @RecipientAccount, @Amount, @TransactionType);";
+
+            using SQLiteCommand insertCmd = new(insertSQL, sqlite_conn);
+
+            var transactions = new[]
+            {
+                new { AccountNumber = "1234", RecipientAccount = (string?)null, Amount = 1000.00, TransactionType = "Deposit" },
+                new { AccountNumber = "1234", RecipientAccount = (string?)null, Amount = 500.00, TransactionType = "Withdrawal" },
+                new { AccountNumber = "1234", RecipientAccount = (string?)"5678", Amount = 200.00, TransactionType = "Transfer" },
+                new { AccountNumber = "5678", RecipientAccount = (string?)"4321", Amount = 300.00, TransactionType = "Transfer" }
+            };
+
+            foreach (var transaction in transactions)
+            {
+                insertCmd.Parameters.Clear();
+                insertCmd.Parameters.AddWithValue("@AccountNumber", transaction.AccountNumber);
+                insertCmd.Parameters.AddWithValue("@RecipientAccount", (object?)transaction.RecipientAccount ?? DBNull.Value);
+                insertCmd.Parameters.AddWithValue("@Amount", transaction.Amount);
+                insertCmd.Parameters.AddWithValue("@TransactionType", transaction.TransactionType);
+                insertCmd.ExecuteNonQuery();
+            }
+        }
+
 
         private static void InsertUsers(SQLiteConnection sqlite_conn)
         {
