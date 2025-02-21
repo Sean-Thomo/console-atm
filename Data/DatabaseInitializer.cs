@@ -21,7 +21,6 @@ namespace ATM.Data
                 CreateTransactionsTable(sqlite_conn);
                 InsertTransactions(sqlite_conn);
 
-                var authService = new AuthService(sqlite_conn);
             }
         }
 

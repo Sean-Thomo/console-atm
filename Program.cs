@@ -13,17 +13,16 @@ namespace ATM {
         private static User? currentUser;
         private static bool isLogedIn;
 
-        static void Main(string[] args) {
+        static async Task Main(string[] args) {
 
             DatabaseInitializer.InitializeDatabase();
             using SQLiteConnection sqlite_conn = new("Data Source=ATM.db;Version=3;");
             sqlite_conn.Open();
             bool continueAtm = true;
 
-            // var fileService = new FileService<User>(Path.Combine("Data", "Users.json"));
             var authService = new AuthService(sqlite_conn);
             var transferService = new TransferService(sqlite_conn);
-            var accountService = new AccountService();
+            var accountService = new AccountService(sqlite_conn);
 
             while (continueAtm)
             {
@@ -54,7 +53,7 @@ namespace ATM {
                         WithDraw(accountService);
                         break;
                     case "5":
-                        Transfer(transferService);
+                        await Transfer(transferService);
                         break;
                     case "6":
                         Console.WriteLine("View Transactions Service Call");
@@ -113,16 +112,23 @@ namespace ATM {
 
             Console.WriteLine("\n====== DEPOSIT ======\n");
             Console.Write("Amount: ");
-            decimal amount = Convert.ToDecimal(Console.ReadLine()!.Trim());
+            decimal amount = Math.Round(Convert.ToDecimal(Console.ReadLine().Trim()), 2);
 
-            accountService.Deposit(currentUser.AccountNumber, amount);
+            if (currentUser != null)
+            {
+                accountService.Deposit(currentUser.AccountNumber, amount);
+            }
+            else
+            {
+                Console.WriteLine("User is not logged in.");
+            }
         }
 
         public static void WithDraw(AccountService accountService) {
 
             Console.WriteLine("\n====== WITHDRAW ======\n");
             Console.Write("Amount: ");
-            decimal amount = Convert.ToDecimal(Console.ReadLine().Trim());
+            decimal amount = Math.Round(Convert.ToDecimal(Console.ReadLine().Trim()), 2);
 
             accountService.Withdraw(currentUser.AccountNumber, amount);
         }
@@ -133,7 +139,7 @@ namespace ATM {
             Console.Write("Account Number: ");
             string receivingAccountNumber = Console.ReadLine().Trim();
             Console.Write("Amount: ");
-            decimal amount = Convert.ToDecimal(Console.ReadLine().Trim());
+            decimal amount = Math.Round(Convert.ToDecimal(Console.ReadLine().Trim()), 2);
 
             User receivingUser = transferService.GetUserByAccountNumber(receivingAccountNumber);
 

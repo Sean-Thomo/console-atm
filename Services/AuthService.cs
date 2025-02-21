@@ -22,7 +22,7 @@ namespace ATM.Services
                     reader["AccountNumber"]?.ToString() ?? string.Empty,
                     reader["UserName"]?.ToString() ?? string.Empty,
                     reader["Pin"]?.ToString() ?? string.Empty,
-                    Convert.ToDecimal(reader["Balance"]),
+                    Math.Round(Convert.ToDecimal(reader["Balance"]), 2),
                     reader["Currency"]?.ToString() ?? string.Empty,
                     true
                 );
