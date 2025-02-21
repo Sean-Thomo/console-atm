@@ -18,7 +18,7 @@ namespace ATM {
             bool continueAtm = true;
 
             var fileService = new FileService<User>(Path.Combine("Data", "Users.json"));
-            var authService = new AuthService(fileService);
+            var authService = new AuthService();
             var transferService = new TransferService(fileService);
             var accountService = new AccountService(fileService);
 
