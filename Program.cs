@@ -4,23 +4,26 @@ using ATM.Models;
 using ATM.Services;
 using ATM.Utils;
 using ATM.Data;
+using System.Data.SQLite;
 
 
 namespace ATM {
     class Program {
 
-        private static User currentUser;
+        private static User? currentUser;
         private static bool isLogedIn;
 
         static void Main(string[] args) {
 
             DatabaseInitializer.InitializeDatabase();
+            using SQLiteConnection sqlite_conn = new("Data Source=ATM.db;Version=3;");
+            sqlite_conn.Open();
             bool continueAtm = true;
 
-            var fileService = new FileService<User>(Path.Combine("Data", "Users.json"));
-            var authService = new AuthService();
-            var transferService = new TransferService(fileService);
-            var accountService = new AccountService(fileService);
+            // var fileService = new FileService<User>(Path.Combine("Data", "Users.json"));
+            var authService = new AuthService(sqlite_conn);
+            var transferService = new TransferService(sqlite_conn);
+            var accountService = new AccountService();
 
             while (continueAtm)
             {
@@ -34,7 +37,7 @@ namespace ATM {
                 Console.WriteLine("7. Exit");
                 Console.Write("\nChoose an option: ");
 
-                string choice = Console.ReadLine();
+                string choice = Console.ReadLine()!;
 
                 switch (choice)
                 {
@@ -72,11 +75,11 @@ namespace ATM {
 
             Console.Write("\n====== LOGIN ======\n");
             Console.Write("\nAccount Number: ");
-            string accountNumber = Console.ReadLine().Trim();
+            string accountNumber = Console.ReadLine()!.Trim()!;
             Console.Write("Account PIN: ");
-            string pin = Console.ReadLine().Trim();
+            string pin = Console.ReadLine()!.Trim();
 
-            currentUser = authService.Login(accountNumber, pin);
+            currentUser = authService.Login(accountNumber, pin)!;
 
             if (currentUser != null) {
                 isLogedIn = true;
@@ -110,7 +113,7 @@ namespace ATM {
 
             Console.WriteLine("\n====== DEPOSIT ======\n");
             Console.Write("Amount: ");
-            decimal amount = Convert.ToDecimal(Console.ReadLine().Trim());
+            decimal amount = Convert.ToDecimal(Console.ReadLine()!.Trim());
 
             accountService.Deposit(currentUser.AccountNumber, amount);
         }

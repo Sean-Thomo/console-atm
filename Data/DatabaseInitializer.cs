@@ -1,6 +1,7 @@
 using System;
 using System.Data.SQLite;
 using System.IO;
+using ATM.Services;
 
 namespace ATM.Data
 {
@@ -19,6 +20,8 @@ namespace ATM.Data
                 InsertUsers(sqlite_conn);
                 CreateTransactionsTable(sqlite_conn);
                 InsertTransactions(sqlite_conn);
+
+                var authService = new AuthService(sqlite_conn);
             }
         }
 

@@ -1,61 +1,71 @@
 using System;
+using System.Data.SQLite;
 using ATM.Models;
 using Newtonsoft.Json;
 
 namespace ATM.Services
 {
-    public class TransferService(FileService<User> fileService)
+    public class TransferService(SQLiteConnection sqliteConnection)
     {
-        private readonly FileService<User> _fileService = fileService;
-
-        private List<User> ReadUsers() {
-            return _fileService.ReadFromFile();
-        }
-
-        private void WriteUsers(List<User> users)
-        {
-            _fileService.WriteToFile(users);
-        }
+        private readonly SQLiteConnection _sqliteConnection = sqliteConnection;
 
         public void Transfer(string currentUserAccountNumber, string receivingAccountNumber, decimal amount, decimal rate) 
         {
-            List<User> users = ReadUsers();
-            User? sendingAccount = users.Find(u => u.AccountNumber == currentUserAccountNumber);
-            User? receiveAccount = users.Find(u => u.AccountNumber == receivingAccountNumber);
+            string query = "SELECT * FROM Users WHERE AccountNumber = @AccountNumber AND RecipientAccount = @RecipientAccount";
+            using SQLiteCommand cmd = new(query, _sqliteConnection);
+            cmd.Parameters.AddWithValue("@AccountNumber", currentUserAccountNumber);
+            cmd.Parameters.AddWithValue("@RecipientAccount", receivingAccountNumber);
 
-            if (sendingAccount == null)
+            using SQLiteDataReader reader = cmd.ExecuteReader();
+            if (reader.Read())
             {
-                Console.WriteLine("Invalid sending account number.");
-                return;
-            }
+                decimal senderBalance = Convert.ToDecimal(reader["Balance"]) - amount;
+                decimal recipientBalance = Convert.ToDecimal(reader["RecipientBalance"]) + amount * rate;
 
-            decimal senderBalance = sendingAccount.Balance - amount;
+                if (senderBalance > 0)
+                {
+                    string updateSenderBalanceQuery = "UPDATE Users SET Balance = @Balance WHERE AccountNumber = @AccountNumber";
+                    using SQLiteCommand updateSenderBalanceCmd = new(updateSenderBalanceQuery, _sqliteConnection);
+                    updateSenderBalanceCmd.Parameters.AddWithValue("@Balance", senderBalance);
+                    updateSenderBalanceCmd.Parameters.AddWithValue("@AccountNumber", currentUserAccountNumber);
+                    updateSenderBalanceCmd.ExecuteNonQuery();
 
-            if (senderBalance > 0 && receiveAccount != null)
-            {
-                Console.WriteLine("\n****** Transferring Money ******");
-                sendingAccount.Balance = senderBalance;
-                receiveAccount.Balance += amount * rate;
-                WriteUsers(users);
+                    string updateRecipientBalanceQuery = "UPDATE Users SET Balance = @Balance WHERE AccountNumber = @AccountNumber";
+                    using SQLiteCommand updateRecipientBalanceCmd = new(updateRecipientBalanceQuery, _sqliteConnection);
+                    updateRecipientBalanceCmd.Parameters.AddWithValue("@Balance", recipientBalance);
+                    updateRecipientBalanceCmd.Parameters.AddWithValue("@AccountNumber", receivingAccountNumber);
+                    updateRecipientBalanceCmd.ExecuteNonQuery();
 
-                Console.WriteLine("\n====== UPDATED BALANCE ======");
-                Console.WriteLine($"\nR {senderBalance}");
+                    Console.WriteLine("\n****** Transferring Money ******");
+                    Console.WriteLine("\n====== UPDATED BALANCE ======");
+                    Console.WriteLine($"\nR {senderBalance}");
+                } else {
+                    Console.WriteLine("Insufficient funds.");
+                }
             } else {
-                Console.WriteLine("Insufficient funds or invalid account number.");
+                Console.WriteLine("Invalid account number.");
             }
         }
 
         public User GetUserByAccountNumber(string accountNumber)
         {
-            List<User> users = ReadUsers();
-            User? user = users.Find(u => u.AccountNumber == accountNumber);
+            string query = "SELECT * FROM Users WHERE AccountNumber = @AccountNumber";
+            using SQLiteCommand cmd = new(query, _sqliteConnection);
+            cmd.Parameters.AddWithValue("@AccountNumber", accountNumber);
 
-            if (user != null)
+            using SQLiteDataReader reader = cmd.ExecuteReader();
+            if (reader.Read())
             {
-                return user;
-            } else {
-                return null;
+                return new User(
+                    reader["AccountNumber"]?.ToString() ?? string.Empty,
+                    reader["UserName"]?.ToString() ?? string.Empty,
+                    reader["Pin"]?.ToString() ?? string.Empty,
+                    Convert.ToDecimal(reader["Balance"]),
+                    reader["Currency"]?.ToString() ?? string.Empty,
+                    true
+                );
             }
+            return null;
         }
 
     }

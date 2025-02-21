@@ -4,18 +4,14 @@ using ATM.Models;
 
 namespace ATM.Services
 {
-    public class AuthService()
+    public class AuthService(SQLiteConnection sqliteConnection)
     {
-        private readonly string connectionString = "Data Source=ATM.db;Version=3;";
-
+        private readonly SQLiteConnection _sqliteConnection = sqliteConnection;
 
         public User? Login(string accountNumber, string pin){
 
-            using SQLiteConnection sqlite_conn = new(connectionString);
-            sqlite_conn.Open();
-
             string query = "SELECT * FROM Users WHERE AccountNumber = @AccountNumber AND Pin = @Pin";
-            using SQLiteCommand cmd = new(query, sqlite_conn);
+            using SQLiteCommand cmd = new(query, _sqliteConnection);
             cmd.Parameters.AddWithValue("@AccountNumber", accountNumber);
             cmd.Parameters.AddWithValue("@Pin", pin);
 
@@ -35,11 +31,9 @@ namespace ATM.Services
         }
 
         public void Logout(string accountNumber) {
-            using SQLiteConnection sqlite_conn = new(connectionString);
-            sqlite_conn.Open();
 
             string query = "UPDATE Users SET IsLogedIn = 0 WHERE AccountNumber = @AccountNumber";
-            using SQLiteCommand cmd = new(query, sqlite_conn);
+            using SQLiteCommand cmd = new(query, _sqliteConnection);
             cmd.Parameters.AddWithValue("@AccountNumber", accountNumber);
             cmd.ExecuteNonQuery();
         }
